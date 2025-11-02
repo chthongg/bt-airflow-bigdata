@@ -1,5 +1,7 @@
 # BT 01: Vehicle Counting System
 
+![1762102928612](image/README/DAG-bt1.png)
+
 ## Cấu trúc thư mục
 
 ```
@@ -16,8 +18,8 @@ airflow/
 ├── projects/
 │   └── vehicle_counting/
 │       ├── data/
-│       │   ├── video1.mp4       # Thêm video 1 (tên cố định)
-│       │   └── video2.mp4       # Thêm video 2 (tên cố định)
+│       │   ├── video1.mp4       # Thêm video 1 
+│       │   └── video2.mp4       # Thêm video 2 
 │       ├── scripts/
 │       │   ├── consumer_spark.py
 │       │   ├── producer_video1.py
@@ -26,7 +28,7 @@ airflow/
 │       └── streamlit/
 │           └── dashboard.py
 ├── docker-compose.yaml
-└── SETUP_BT01.md
+└── README.md
 ```
 
 ## Lưu ý
@@ -45,7 +47,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-### 2. Chạy Airflow
+### 2. Chạy Airflow & xem trang Dashboard streamlit
 
 1. Mở: http://localhost:8080
 2. Login: `admin` / `admin`
