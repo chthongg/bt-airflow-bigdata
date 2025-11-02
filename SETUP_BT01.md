@@ -31,7 +31,7 @@ airflow/
 
 ## Lưu ý
 
-- Xóa thư mục `projects/vehicle_counting/data/video`, thêm 2 video vào `projects/vehicle_counting/data/`:
+- Tạo thư mục `projects/vehicle_counting/data/` và thêm 2 video vào thư mục:
   - `video1.mp4`
   - `video2.mp4`
 
