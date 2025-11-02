@@ -1,0 +1,78 @@
+# Airflow
+logs/*
+!logs/.gitkeep
+airflow.cfg
+airflow.db
+webserver_config.py
+unittests.cfg
+*.pid
+*.err
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+ENV/
+env/
+
+# Spark
+metastore_db/
+derby.log
+checkpoints/
+
+# Data - Videos KHÔNG push (người dùng tự thêm)
+projects/*/data/videos/*.mp4
+projects/*/data/videos/*.avi
+projects/*/data/videos/*.mov
+projects/*/data/videos/*.mkv
+!projects/*/data/videos/.gitkeep
+
+# Models - yolov8n.pt sẽ tự download khi chạy DAG
+models/*.pt
+
+# Docker
+.env
+postgres-db-volume/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+*.cache
+
+# Documentation không cần thiết (chỉ giữ SETUP_BT01.md)
+QUICKSTART.md
+SETUP.md
+REQUIREMENTS_INFO.md
+DOCS_INDEX.md
