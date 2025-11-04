@@ -1,6 +1,6 @@
 # BT 01: Vehicle Counting System
 
-![1762102928612](image/README/DAG-bt1.png)
+![img1](image/README/DAG-bt1.png)
 
 ## Cấu trúc thư mục
 
@@ -54,5 +54,9 @@ docker-compose up -d
 3. Tìm DAG: `vehicle_counting_system`
 4. Click trigger DAG
 5. Dashboard streamlit: http://localhost:8501
+
+# BT 02: ABSA Streaming Social Listening
+
+![img2](image/README/DAG-bt2.png)
 
 
