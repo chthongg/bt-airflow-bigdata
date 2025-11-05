@@ -35,21 +35,36 @@ finally:
         pass
 
 # --- Khởi tạo Producer ---
+print(f"[Producer] Connecting to Kafka at {KAFKA_SERVER} …")
 producer = KafkaProducer(
     bootstrap_servers=KAFKA_SERVER,
-    value_serializer=lambda v: json.dumps(v).encode("utf-8")
+    value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+    acks='all',
+    retries=3,
+    retry_backoff_ms=500,
 )
+print("[Producer] Kafka client initialized.")
 
 # --- Đọc dữ liệu ---
 df = pd.read_csv(CSV_PATH)
 print(f"Loaded {len(df)} rows from {CSV_PATH}")
 
+# Giới hạn cho demo (tránh OOM với 7GB RAM)
+MAX_RECORDS = 100
+df = df.head(MAX_RECORDS)
+print(f"[DEMO MODE] Limiting to {len(df)} records for stability")
+
 # --- Gửi từng dòng ---
 for i, row in df.iterrows():
-    text = row["text"] if "text" in row else row.iloc[0]
+    text = row.get("text", row.iloc[0])
     msg = {"id": int(i), "review": text}
-    producer.send(TOPIC, msg)
-    print(f"[{i+1}/{len(df)}] Sent → {msg}")
+    try:
+        fut = producer.send(TOPIC, msg)
+        fut.get(timeout=10)
+        print(f"[{i+1}/{len(df)}] Sent → {msg}")
+    except Exception as e:
+        print(f"[{i+1}/{len(df)}] ❌ Send failed: {e}")
+        raise
     time.sleep(DELAY)
 
 producer.flush()
