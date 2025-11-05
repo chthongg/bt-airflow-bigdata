@@ -59,4 +59,11 @@ docker-compose up -d
 
 ![img2](image/README/DAG-bt2.png)
 
+## Inference
+1. Consumer('absa_reviews') - Kakfa topic hold first 100 records in test.csv
+![img3](image/README/infer01.png)
+
+2. Consumer with hot-reload for new model
+![img3](image/README/infer01.png)
+
 
