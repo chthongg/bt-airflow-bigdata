@@ -24,7 +24,7 @@ DB_CONFIG = {
     "database": "airflow"
 }
 
-ASPECTS = ["Price", "Shipping", "Outlook", "Quality", "Size", "Shop_Service", "General", "Others"]
+ASPECTS = ["price", "shipping", "outlook", "quality", "size", "shop_service", "general", "others"] # chữ thường
 SENTIMENTS = ["POS", "NEU", "NEG"]
 
 # ------------------------
