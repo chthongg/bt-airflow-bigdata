@@ -56,14 +56,15 @@ docker-compose up -d
 5. Dashboard streamlit: http://localhost:8501
 
 # BT 02: ABSA Streaming Social Listening
+![img2](image/README/DAG-bt2.png)
+
 ## Yêu cầu
-Thêm model muốn sử dụng vào `./model` (E.g. best_absa_hardshare.pt)
+- Thêm model muốn sử dụng vào `./model` (E.g. best_absa_hardshare.pt)
+- Nếu máy ảo ít RAM và k tự tải được token cho mo hinh `xlm-roberta-base` thì truy cập `https://huggingface.co/FacebookAI/xlm-roberta-base/blob/main/pytorch_model.bin` để tải về máy cá nhân. Sau đó thêm vào đường dẫn `./models/hf-cache/hub/models--xlm-roberta-base/snapshots/e73636d4f797dec63c3081bb6ed5c7b0bb3f2089`
 
 1. Truy cập http://localhost:8080
 2. Tìm DAG: `absa_streaming_lifecycle_demo' và trigger DAG run
 3. Dashboard streamlit: http://localhost:8502
-
-![img2](image/README/DAG-bt2.png)
 
 ## Inference
 1. Consumer('absa_reviews') - Kakfa topic hold first 100 records in test.csv
