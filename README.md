@@ -56,6 +56,9 @@ docker-compose up -d
 5. Dashboard streamlit: http://localhost:8501
 
 # BT 02: ABSA Streaming Social Listening
+## Yêu cầu
+Thêm model muốn sử dụng vào `./model` (E.g. best_absa_hardshare.pt)
+
 1. Truy cập http://localhost:8080
 2. Tìm DAG: `absa_streaming_lifecycle_demo' và trigger DAG run
 3. Dashboard streamlit: http://localhost:8502
