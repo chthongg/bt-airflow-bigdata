@@ -64,6 +64,7 @@ docker-compose up -d
 ![img3](image/README/infer01.png)
 
 2. Consumer with hot-reload for new model
-![img3](image/README/infer01.png)
+
+![img3](image/README/infer02.png)
 
 
