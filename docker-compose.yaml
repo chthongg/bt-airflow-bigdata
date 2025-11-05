@@ -4,13 +4,23 @@ x-airflow-common:
     context: ./
     dockerfile: base/Dockerfile
   image: airflow-base:2.9.0-custom
+
+  # BỔ SUNG GIỚI HẠN RAM
+  deploy:
+    resources:
+      limits:
+        memory: 6G # giới hạn tối đa 6GB RAM cho mỗi container Airflow
+      reservations:
+        memory: 2G # đảm bảo container luôn có 2GB RAM tối thiểu
+
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__FERNET_KEY: 'WKbVzhuLj4yogy8OiYGTdGpYOtSuFN_wC8CmHlkPDtg='
+    AIRFLOW__WEBSERVER__SECRET_KEY: 'WKbVzhuLj4yogy8OiYGTdGpYOtSuFN_wC8CmHlkPDtg=' # bổ sung để xem log và bypass warning về 403 forbidden
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
@@ -38,6 +48,8 @@ x-airflow-common:
 services:
   postgres:
     image: postgres:13
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -98,6 +110,16 @@ services:
   airflow-worker:
     <<: *airflow-common
     command: celery worker
+    
+    # BỔ SUNG CẤU HÌNH GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+              
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -188,7 +210,6 @@ services:
     ports:
       - "8501:8501"
     volumes:
-      - ${AIRFLOW_PROJ_DIR:-.}/projects/absa_streaming:/opt/airflow/projects/absa_streaming
       - ${AIRFLOW_PROJ_DIR:-.}/projects/vehicle_counting:/opt/airflow/projects/vehicle_counting
       - ${AIRFLOW_PROJ_DIR:-.}/models:/opt/airflow/models
     depends_on:
@@ -199,6 +220,21 @@ services:
       airflow-worker:
         condition: service_healthy
       airflow-triggerer:
+        condition: service_healthy
+  
+  streamlit-absa:
+    image: airflow-base:2.9.0-custom
+    container_name: streamlit_absa
+    entrypoint: ["bash", "-c", "streamlit run /opt/airflow/projects/absa_streaming/streamlit/streamlit_app.py --server.port 8501 --server.address 0.0.0.0"]
+    ports:
+      - "8502:8501" # ánh xạ Host Port 8502 đến Container Port 8501
+    volumes:
+      - ${AIRFLOW_PROJ_DIR:-.}/projects/absa_streaming:/opt/airflow/projects/absa_streaming
+      - ${AIRFLOW_PROJ_DIR:-.}/models:/opt/airflow/models
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-webserver:
         condition: service_healthy
 
   zookeeper-airflow:
